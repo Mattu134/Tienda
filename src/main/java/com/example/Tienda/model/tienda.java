@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class tienda
-{   
+{
     @Id
     private int id;
     private String nombre;
