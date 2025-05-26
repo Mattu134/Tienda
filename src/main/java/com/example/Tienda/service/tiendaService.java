@@ -1,47 +1,30 @@
-package com.example.Tienda.service;
+package com.example.tienda.service;
 
-import com.example.Tienda.model.tienda;
-import com.example.Tienda.model.horario;
-import com.example.Tienda.model.empleado;
-import com.example.Tienda.repository.tiendaRepository;
-import com.example.Tienda.repository.horarioRepository;
-import com.example.Tienda.repository.empleadoRepository;
+import com.example.tienda.model.tienda;
+import com.example.tienda.repository.tiendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class tiendaService {
-    private final tiendaRepository tiendaRepository;
-    private final horarioRepository horarioRepository;
-    private final empleadoRepository empleadoRepository;
+
     @Autowired
-    public tiendaService(tiendaRepository tiendaRepository, horarioRepository horarioRepository, empleadoRepository empleadoRepository) {
-        this.tiendaRepository = tiendaRepository;
-        this.horarioRepository = horarioRepository;
-        this.empleadoRepository = empleadoRepository;
-    }
-    public List<tienda> buscarTodas() {
+    private tiendaRepository tiendaRepository;
+
+    public List<tienda> obtenerTodas(){
         return tiendaRepository.findAll();
     }
-    public Optional<tienda> buscarPorId(Long id) {
-        return tiendaRepository.findById(id);
+
+    public tienda guardarTienda(tienda nuevaTienda){
+        if(tiendaRepository.existsById(nuevaTienda.getId())){
+            throw new RuntimeException("ya existe una tienda con el ID: " + nuevaTienda.getId());
+        }
+        return tiendaRepository.save(nuevaTienda);
     }
-    public tienda guardar(tienda tienda) {
-        return tiendaRepository.save(tienda);
-    }
-    public void eliminarPorId(Long id) {
+    public void eliminarTienda(int id){
         tiendaRepository.deleteById(id);
     }
-    public List<horario> buscarHorariosPorTiendaId(Long tiendaId) {
-        return horarioRepository.findByTiendaId(tiendaId);
-    }
-    public List<empleado> buscarEmpleadosPorTiendaId(String idTienda) {
-        return empleadoRepository.buscarPorIdTienda(idTienda);
-    }
-    public horario guardarHorario(horario horario) {
-        return horarioRepository.save(horario);
-    }   
 
 }

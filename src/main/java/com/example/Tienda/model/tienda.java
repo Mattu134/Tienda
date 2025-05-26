@@ -1,20 +1,27 @@
-package com.example.Tienda.model;
+package com.example.tienda.model;
 
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class tienda 
- {   private String id;
+
+public class tienda
+{   
+    @Id
+    private int id;
     private String nombre;
     private String direccion;
     private String telefono;
+    @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<empleado> empleados;
+    @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<horario> horarios;
 
 }
